@@ -4,16 +4,16 @@
 #include<zconf.h>
 #define N 999
 
-long READ_NUM = 0;
-long BASE_NUM = 0;
-long GC = 0;
-long Q20 = 0;
-long Q30 = 0;
+unsigned long READ_NUM = 0;
+unsigned long BASE_NUM = 0;
+unsigned long GC = 0;
+unsigned long Q20 = 0;
+unsigned long Q30 = 0;
 
 void GC_stat(char *read)
 {
      int i;
-     for (i=0;i<strlen(read);i++){
+     for (i=0;i<(strlen(read)-1);i++){
          if (read[i] == 'C' || read[i] == 'G'){
             GC += 1;        
          }
@@ -23,7 +23,7 @@ void GC_stat(char *read)
 void quality_stat(char *read_qual)
 {
     int i;
-    for (i=0;i<strlen(read_qual);i++){
+    for (i=0;i<(strlen(read_qual)-1);i++){
         if ((read_qual[i]-33)>=20){
            Q20 += 1;
            if((read_qual[i]-33)>=30){
@@ -40,7 +40,7 @@ void gzipfastq(gzFile *fp)
 
     while (gzgets(fp, ch, N) != NULL){
           if (count%4 == 2){
-		  BASE_NUM += strlen(ch) - 1;
+		  BASE_NUM += (strlen(ch)-1);
 		  READ_NUM += 1;
                   GC_stat(ch);
 	  }
@@ -63,7 +63,7 @@ void fastq(FILE *fp)
 
     while (fgets(ch, N, fp) != NULL){
 	if (count%4 == 2){
-		BASE_NUM += strlen(ch) - 1;
+		BASE_NUM += (strlen(ch) - 1);
 		READ_NUM += 1;
                 GC_stat(ch);
 	}
@@ -89,7 +89,7 @@ int main(int argc,char *argv[])
 		gzFile *fp;
                 if ((fp=gzopen(argv[1], "rb")) == NULL ){
                      printf("Cannot find file:%s\n",argv[1]);
-                     exit(1);
+                     return 1;
                 }
 		//fp = gzopen(argv[1],"rb");
                 gzipfastq(fp);
@@ -98,12 +98,12 @@ int main(int argc,char *argv[])
 		FILE *fp;
 		if ((fp = fopen(argv[1],"r")) == NULL){
                     printf("Cannot find file:%s\n",argv[1]);
-                    exit(1);
+                    return 1;
                 }
 		fastq(fp);
 		fclose(fp);
 	}else{
-		 printf("please input fastq or fastq.gz file\n");
+		 printf("please input fastq or fastq.gz file\nusage:fastq_stat fastq_file file_stype\n");
 	}
 	return 0;
 }
