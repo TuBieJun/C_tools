@@ -40,7 +40,7 @@ void gzipfastq(gzFile *fp)
 
     while (gzgets(fp, ch, N) != NULL){
           if (count%4 == 2){
-		  BASE_NUM += strlen(ch);
+		  BASE_NUM += strlen(ch) - 1;
 		  READ_NUM += 1;
                   GC_stat(ch);
 	  }
@@ -63,7 +63,7 @@ void fastq(FILE *fp)
 
     while (fgets(ch, N, fp) != NULL){
 	if (count%4 == 2){
-		BASE_NUM += strlen(ch);
+		BASE_NUM += strlen(ch) - 1;
 		READ_NUM += 1;
                 GC_stat(ch);
 	}
