@@ -138,10 +138,10 @@ void splitfastq(FILE *fq1_list, FILE *fq2_list, FILE *fq1_out, FILE *fq2_out, st
 										fputc('+', fq2_out);
 										fputs(index2, fq2_out);
 										fputc('\n', fq2_out);
-										fputs(seq2_iter->seq.s+MAX_INDEX_LEN, fq2_out);
+										fputs(seq2_iter->seq.s+MAX_INDEX_LEN+1, fq2_out);
 										fputc('\n', fq2_out);
 										fputs("+\n", fq2_out);
-										fputs(seq2_iter->qual.s+MAX_INDEX_LEN, fq2_out);
+										fputs(seq2_iter->qual.s+MAX_INDEX_LEN+1, fq2_out);
 										fputc('\n', fq2_out);
 
 										/*
